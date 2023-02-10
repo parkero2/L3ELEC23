@@ -44,8 +44,8 @@ int sybForLines[4] = {1, 1, 3, 2};
 
 void displayRefresh () {
     //Fancy display refresh stuff
+    lcd.clear();
     for (int line = 0; line < sizeof(linesToWrite); line++){
-        lcd.clear();
         lcd.setCursor(0, line);
         lcd.write(sybForLines[line]);
         lcd.print(" " + linesToWrite[line]);
@@ -58,8 +58,8 @@ void setup() {
   if (SerialDebug) Serial.begin(9600); Serial.println("GPS thing");
   
   ss.begin(GPSBaud); //Software serial
-  lcd.backlight();
   lcd.begin();
+  lcd.backlight();
 
   //LCD character creation
   lcd.createChar(0, refresh);
@@ -67,6 +67,12 @@ void setup() {
   lcd.createChar(2, date_mark);
   lcd.createChar(3, clock_mark);
   lcd.createChar(4, warning);
+
+  lcd.clear();
+  for (int line = 0; line < sizeof(linesToWrite); line++){
+      lcd.setCursor(0, line);
+      lcd.write(sybForLines[line]);
+  }
 }
 
 void loop() {
@@ -110,5 +116,6 @@ void loop() {
       displayRefresh();
       break; //If the display is being refreshed, there is no point in checking new data.
     }
+    delay(500);
   }  
 }
