@@ -1,3 +1,4 @@
+const char index_html[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +43,7 @@
             color: #ffffff;
         }
     </style>
+    </script>
 </head>
 <body>
     <h1>Oliver's mars rover</h1>
@@ -56,4 +58,48 @@
         <button id="resetR">reset</button>
     </div>
 </body>
+
+<script>
+    const POSTURL = "./post";
+
+    //Grab the elements that will be used as the input
+    let lft = document.getElementById("left");
+    let rgt = document.getElementById("right");
+    let resetL = document.getElementById("resetL");
+    let resetR = document.getElementById("resetR");
+    
+    //Add reset buttons functionality 
+    resetL.addEventListener("click", function() {
+        lft.value = 0;
+    });
+    resetR.addEventListener("click", function() {
+        rgt.value = 0;
+    });
+    //Add event listeners to the inputs
+    lft.addEventListener("input", function() {
+        //Send the value of the input to the server
+        fetch(POSTURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                left: lft.value
+            })
+        }).then();
+    });
+    rgt.addEventListener("input", function() {
+        //Send the value of the input to the server
+        let req = fetch(POSTURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                right: rgt.value
+            })
+        }).then();
+    });
+</script>
 </html>
+)=====";
