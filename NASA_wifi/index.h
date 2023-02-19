@@ -43,7 +43,6 @@ const char index_html[] PROGMEM = R"=====(
             color: #ffffff;
         }
     </style>
-    </script>
 </head>
 <body>
     <h1>Oliver's mars rover</h1>
