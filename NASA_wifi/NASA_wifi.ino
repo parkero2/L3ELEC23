@@ -57,6 +57,7 @@ void changeSpeed(int l, int r)
     lsp = abs(l) > 255 ? 255 : abs(l);
     rsp = abs(r) > 255 ? 255 : abs(r);
     // Check if direction is forward or backward
+    // Serial.println("lsp: " + lsp.toString() + " rsp: " + rsp.toString());
     if (current_dir)
     {
         backward();
@@ -71,9 +72,8 @@ void setup()
     /**pinMode(leftForward, OUTPUT);
     pinMode(leftBackward, OUTPUT);
     pinMode(rightForward, OUTPUT);
-    pinMode(rightBackward, OUTPUT);
+    pinMode(rightBackward, OUTPUT);*/
     Serial.begin(115200);
-  */
     Serial.print("Setting AP (Access Point)…");
     // Remove the password parameter, if you want the AP (Access Point) to be open
     WiFi.softAP(ssid, password);
@@ -87,28 +87,31 @@ void setup()
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
               { request->send_P(200, "text/html", index_html); });
     // Handle a POST request. The request body is a JSON string with the keys lft and rgt.
-    server.on("/post", HTTP_POST, [](AsyncWebServerRequest * request){}, NULL, [](AsyncWebServerRequest * request, uint8_t *data, size_t len, size_t index, size_t total)
-              {
+    server.on(
+        "/post", HTTP_POST, [](AsyncWebServerRequest *request)
+        {
         // The request body is a JSON string with the keys lft and rgt.
         int lft = 0, rgt = 0;
         
         Serial.println("POST request received");
         //request->send(200, "text/plain", "OK");
-        if (request->data)
-        {
-            lft = request->getParam("left", true)->value().toInt();
-            changeSpeed(lft, rsp);
+
+        for(int i=0;i<request->params();i++){
+            AsyncWebParameter* p = request->getParam(i);
+            if (p->name() == "lft") {
+                Serial.println("lft: " + String(p->value()));
+                lft = p->value().toInt();
+                current_dir = lft < 0 ? 1 : 0;
+                changeSpeed(lft, rsp);
+            }
+            if (p->name() == "rgt") {
+                Serial.println("rgt: " + String(p->value()));
+                rgt = p->value().toInt();
+                current_dir = rgt < 0 ? 1 : 0;
+                changeSpeed(lsp, rgt);
+            }
         }
-        if (request->hasParam("right", true))
-        {
-            rgt = request->getParam("right", true)->value().toInt();
-            changeSpeed(lsp, rgt);
-        }
-        if (lft < 0 || rgt < 0) {
-            backward();
-        } else {
-            forward();
-        }});
+        request->send(200, "text/plain", "OK"); });
     server.begin();
 }
 
