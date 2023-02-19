@@ -31,12 +31,12 @@ const char index_html[] PROGMEM = R"=====(
         #resetL {
             margin: auto;
             width: fit-content;
-            margin-left:40px;
+            margin-left:45px;
         }
         #resetR {
             margin: auto;
             width: fit-content;
-            margin-left:90px;
+            margin-left:85px;
         }
         body {
             background-color: #000000;
@@ -52,7 +52,10 @@ const char index_html[] PROGMEM = R"=====(
         <input type="range" min="-255" max="255" value="0" class="slider" id="left">
         <input type="range" min="-255" max="255" value="0" class="slider" id="right">
         <p>left/right</p>
-        <br><br>
+        <div id="current">
+            <p id="leftinfo">Left: 0</p>
+            <p id="rightinfo">Right: 0</p>
+        </div>
         <button id="resetL">reset</button>
         <button id="resetR">reset</button>
     </div>
@@ -66,6 +69,8 @@ const char index_html[] PROGMEM = R"=====(
     let rgt = document.getElementById("right");
     let resetL = document.getElementById("resetL");
     let resetR = document.getElementById("resetR");
+    let leftinfo = document.getElementById("leftinfo");
+    let rightinfo = document.getElementById("rightinfo");
     
     //Add reset buttons functionality 
     resetL.addEventListener("click", function() {
@@ -86,6 +91,7 @@ const char index_html[] PROGMEM = R"=====(
     });
     //Add event listeners to the inputs
     lft.addEventListener("input", function() {
+        leftinfo.innerHTML = "Left: " + lft.value;
         //Send the value of the input to the server
         fetch(POSTURL + "?lft=" + lft.value, {
             method: "POST",
@@ -94,6 +100,7 @@ const char index_html[] PROGMEM = R"=====(
             }}).then();
     });
     rgt.addEventListener("input", function() {
+        rightinfo.innerHTML = "Right: " + rgt.value;
         //Send the value of the input to the server
         let req = fetch(POSTURL + "?rgt=" + rgt.value, {
             method: "POST",
@@ -103,5 +110,6 @@ const char index_html[] PROGMEM = R"=====(
     });
 </script>
 </html>
+
 
 )=====";
