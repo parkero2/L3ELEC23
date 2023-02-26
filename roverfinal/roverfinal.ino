@@ -4,6 +4,11 @@
 #include "driver.h"
 #include <QMC5883LCompass.h>
 
+/*REFERENCES
+ * https://github.com/mprograms/QMC5883LCompass/blob/master/examples/bearing/bearing.ino
+ * https://github.com/mprograms/QMC5883LCompass/blob/master/examples/calibration/calibration.ino
+ */
+
 // Motor config
 int leftForward = 2, leftBackward = 3, rightForward = 9, rightBackward = 10;
 
