@@ -55,5 +55,18 @@ void awaitGPS()
 void loop()
 {
     // Update GPS location
-    awaitGPS(); // In a perfect world, this would be ran in a separate threaddueto the time factor, but most Arduino boards don't support multithreading.
+    // awaitGPS(); // In a perfect world, this would be ran in a separate thread due to the time factor, but most Arduino boards don't support multithreading.
+
+    int x = compass.getX();
+    int y = compass.getY();
+    int z = compass.getZ();
+
+    Serial.println("X: ");
+    Serial.print(x);
+    Serial.println("Y: ");
+    Serial.print(y);
+    Serial.println("Z: ");
+    Serial.print(z);
+
+    delay(200);
 }

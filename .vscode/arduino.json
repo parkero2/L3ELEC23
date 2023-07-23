@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:nano",
+    "port": "COM3",
+    "sketch": "magnetomiter\\magnetomiter.ino",
+    "programmer": "avrispmkii",
+    "configuration": "cpu=atmega328"
+}
